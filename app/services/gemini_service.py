@@ -1,0 +1,1 @@
+#Generation summaries and texts using Gemini
