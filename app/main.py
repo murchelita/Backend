@@ -5,3 +5,16 @@ app = FastAPI()
 @app.get("/")
 def ping():
     return {"status": "well"}
+
+
+
+
+
+
+
+
+
+
+
+
+
