@@ -1,5 +1,5 @@
 from app.database.database import Base, engine
-from app.database.models import *
+from app.models.models import User, Lecture, Note, Quiz, Question, QuizAttempt
 
 print("Creating tables...")
 
