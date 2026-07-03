@@ -4,6 +4,7 @@ from fastapi import APIRouter,HTTPException
 from pydantic import BaseModel
 from app.services.youtube_service import download_audio_from_youtube
 from app.services.ai_service import transcribe_audio
+from app.database.database import get_db
 
 router = APIRouter()
 
