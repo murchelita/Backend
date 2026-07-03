@@ -2,7 +2,9 @@
 # import
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import declarative_base
 
+Base = declarative_base()
 
 DATABASE_URL= "postgresql://postgres.snwwzrgatgunatigqrts:jdswNeu1lzJ6CIq7@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
 
