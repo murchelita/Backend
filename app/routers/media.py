@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 import uuid
 
 from app.services.audio_service import save_uploaded_file
-from app.database.deps import get_db
-from app.database.models import Lecture
+from app.database import get_db
+from app.models import Lecture
 
 router = APIRouter()
 

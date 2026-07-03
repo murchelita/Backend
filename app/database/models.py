@@ -2,7 +2,7 @@
 #import
 from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey, JSON
 from sqlalchemy.sql import func
-from app.database.database import Base
+from app import Base
 
 
 #users
