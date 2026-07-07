@@ -15,8 +15,6 @@ SessionLocal = sessionmaker(autocommit=False,
                        bind=engine
 )
 
-Base = declarative_base()
-
 #API
 
 def get_db():
