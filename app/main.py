@@ -8,6 +8,7 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://chatty-drivable-unsliced.ngrok-free.dev"
 ]
 app.include_router(users.router)
 app.include_router(media.router)
