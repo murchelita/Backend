@@ -2,17 +2,27 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.orm import Session
 import uuid
 import traceback
-
 from app.services.audio_service import (
     save_uploaded_file,
     extract_audio
 )
-
+from app.services.whisper_service import (
+    transcribe_audio
+)
+from app.services.gemini_service import (
+    generate_summary
+)
 from app.database.database import get_db
-from app.database.models import Lecture
+from app.database.models import (
+    Lecture,
+    User,
+    Note,
+    Transcript
+)
 
 
 router = APIRouter()
+
 
 
 @router.post("/api/process-media")
@@ -21,66 +31,271 @@ def process_media(
     db: Session = Depends(get_db)
 ):
 
-    # 1. Сохраняем загруженный файл
+
+
+    # 1. Save uploaded video
+
+
     try:
+
         file_info = save_uploaded_file(file)
 
+
     except Exception as e:
-        print("Error saving file")
+
         traceback.print_exc()
 
         raise HTTPException(
             status_code=500,
-            detail=f"File save failed: {str(e)}"
+            detail=f"File saving failed: {e}"
         )
 
 
-    # 2. Извлекаем аудио из видео через FFmpeg
+
+
+    # 2. Extract audio using FFmpeg
+
+
     try:
+
         audio_path = extract_audio(
             file_info["file_path"]
         )
 
+
     except Exception as e:
-        print("Error extracting audio")
+
         traceback.print_exc()
 
         raise HTTPException(
             status_code=500,
-            detail=f"Audio extraction failed: {str(e)}"
+            detail=f"Audio extraction failed: {e}"
         )
 
 
-    # 3. Создаём запись лекции в базе данных
+
+
+    # 3. Create test user
+
+
+    user_id = "11111111-1111-1111-1111-111111111111"
+
+
+    user = db.query(User).filter(
+        User.id == user_id
+    ).first()
+
+
+
+    if not user:
+
+        user = User(
+
+            id=user_id,
+
+            email="test@test.com",
+
+            full_name="Test User"
+
+        )
+
+        db.add(user)
+
+        db.commit()
+
+
+
+
+    # 4. Create lecture
+
+
+    lecture_id = str(uuid.uuid4())
+
+
     try:
+
+
         lecture = Lecture(
-            id=str(uuid.uuid4()),
-            user_id="11111111-1111-1111-1111-111111111111",
+
+            id=lecture_id,
+
+            user_id=user_id,
+
             title=file.filename,
+
             source_type="file",
+
             status="processing"
+
         )
+
 
         db.add(lecture)
+
         db.commit()
+
         db.refresh(lecture)
 
+
+
     except Exception as e:
+
+
         db.rollback()
 
-        print("Database error")
         traceback.print_exc()
 
+
         raise HTTPException(
+
             status_code=500,
-            detail=f"Database failed: {str(e)}"
+
+            detail=f"Lecture creation failed: {e}"
+
         )
 
 
-    # 4. Ответ API
+
+
+    # 5. Speech To Text (Whisper)
+
+
+
+    try:
+
+
+        transcript = transcribe_audio(
+            audio_path
+        )
+
+
+    except Exception as e:
+
+
+        lecture.status = "failed"
+
+        db.commit()
+
+
+        traceback.print_exc()
+
+
+        raise HTTPException(
+
+            status_code=500,
+
+            detail=f"Whisper failed: {e}"
+
+        )
+
+
+
+
+    # 6. Generate summary (Gemini)
+
+
+
+    try:
+
+
+        summary = generate_summary(
+            transcript
+        )
+
+
+    except Exception as e:
+
+
+        lecture.status = "failed"
+
+        db.commit()
+
+
+        traceback.print_exc()
+
+
+        raise HTTPException(
+
+            status_code=500,
+
+            detail=f"Gemini failed: {e}"
+
+        )
+
+
+
+
+    # 7. Save notes
+
+
+
+    try:
+
+        note = Note(
+
+            id=str(uuid.uuid4()),
+
+            lecture_id=lecture.id,
+
+            transcript=transcript,
+
+            summary="",
+
+            key_points=""
+
+        )
+
+        db.add(note)
+
+
+        lecture.status = "completed"
+
+
+        db.commit()
+
+
+
+    except Exception as e:
+
+
+        db.rollback()
+
+        traceback.print_exc()
+
+
+        raise HTTPException(
+
+            status_code=500,
+
+            detail=f"Saving notes failed: {e}"
+
+        )
+
+
+
+
+    # 8. Response
+
+
+
     return {
+
+
         "status": "success",
+
+
         "lecture_id": lecture.id,
+
+
         "video_path": file_info["file_path"],
-        "audio_path": audio_path
+
+
+        "audio_path": audio_path,
+
+
+        "transcript": transcript,
+
+
+        "summary": summary
+
     }

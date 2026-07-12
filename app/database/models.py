@@ -11,7 +11,7 @@ class User(Base):
 
     id = Column(String, primary_key=True)
     email = Column(String, unique=True)
-    fullname = Column(String)
+    full_name = Column(String)
 
 
 #lectures
@@ -34,6 +34,8 @@ class Lecture(Base):
 
     status = Column(String)
 
+    transcript = Column(Text)
+
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
@@ -45,18 +47,45 @@ class Lecture(Base):
         onupdate=func.now()
     )
 
+# transcripts
+class Transcript(Base):
+    __tablename__ = "transcripts"
+
+    id = Column(String, primary_key=True)
+
+    lecture_id = Column(
+        String,
+        ForeignKey("lectures.id")
+    )
+
+    text = Column(Text)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
 #notes
 class Note(Base):
     __tablename__ = "notes"
 
     id = Column(String, primary_key=True)
-    lecture_id = Column(String, ForeignKey("lectures.id"))
+
+    lecture_id = Column(
+        String,
+        ForeignKey("lectures.id")
+    )
+
+    transcript = Column(Text)
 
     summary = Column(Text)
+
     key_points = Column(Text)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
 
 #quizzes
