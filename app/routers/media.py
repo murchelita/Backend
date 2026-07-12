@@ -55,7 +55,8 @@ def process_media(
     try:
         lecture = Lecture(
             id=str(uuid.uuid4()),
-            user_id=str(uuid.uuid4()),
+            user_id="11111111-1111-1111-1111-111111111111",
+            title=file.filename,
             source_type="file",
             status="processing"
         )

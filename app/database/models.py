@@ -19,12 +19,26 @@ class Lecture(Base):
     __tablename__ = "lectures"
 
     id = Column(String, primary_key=True)
-    user_id = Column(String, ForeignKey("users.id"))
+
+    user_id = Column(
+        String,
+        ForeignKey("users.id")
+    )
+
+    title = Column(
+        String,
+        nullable=False
+    )
 
     source_type = Column(String)
+
     status = Column(String)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
     updated_at = Column(
         DateTime(timezone=True),
         server_default=func.now(),
