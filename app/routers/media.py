@@ -33,7 +33,7 @@ def process_media(
 
 
 
-    # 1. Save uploaded video
+    #Save uploaded video
 
 
     try:
@@ -53,7 +53,7 @@ def process_media(
 
 
 
-    # 2. Extract audio using FFmpeg
+    #Extract audio using FFmpeg
 
 
     try:
@@ -75,7 +75,7 @@ def process_media(
 
 
 
-    # 3. Create test user
+    #Create test user
 
 
     user_id = "11111111-1111-1111-1111-111111111111"
@@ -106,7 +106,7 @@ def process_media(
 
 
 
-    # 4. Create lecture
+    #Create lecture
 
 
     lecture_id = str(uuid.uuid4())
@@ -157,7 +157,7 @@ def process_media(
 
 
 
-    # 5. Speech To Text (Whisper)
+    #Speech To Text (Whisper)
 
 
 
@@ -225,7 +225,7 @@ def process_media(
 
 
 
-    # 7. Save notes
+    #Save notes
 
 
 
@@ -274,7 +274,7 @@ def process_media(
 
 
 
-    # 8. Response
+    #Response
 
 
 
