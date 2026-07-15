@@ -18,22 +18,18 @@ import uuid
 router = APIRouter()
 
 
-
 @router.post("/api/lectures/{lecture_id}/quiz")
 def create_quiz(
-    lecture_id: str,
-    db: Session = Depends(get_db)
+        lecture_id: str,
+        db: Session = Depends(get_db)
 ):
 
-    # 1.Checking
+    # Find lecture
     lecture = (
         db.query(Lecture)
-        .filter(
-            Lecture.id == lecture_id
-        )
+        .filter(Lecture.id == lecture_id)
         .first()
     )
-
 
     if not lecture:
         raise HTTPException(
@@ -42,16 +38,12 @@ def create_quiz(
         )
 
 
-
-    #summary
+    #Find summary
     note = (
         db.query(Note)
-        .filter(
-            Note.lecture_id == lecture.id
-        )
+        .filter(Note.lecture_id == lecture.id)
         .first()
     )
-
 
     if not note:
         raise HTTPException(
@@ -60,59 +52,57 @@ def create_quiz(
         )
 
 
-
     try:
 
-        #AI quiz
-        quiz_response = generate_quiz(
-            note.summary
-        )
+        #Generate AI quiz
+        quiz_response = generate_quiz(note.summary)
 
 
-        #JSON
-        quiz_data = quiz_response
+        #Convert JSON string -> dict
+        if isinstance(quiz_response, str):
+            quiz_data = json.loads(quiz_response)
+        else:
+            quiz_data = quiz_response
 
 
-        #Quiz
+
+        #Create quiz
         new_quiz = Quiz(
             id=str(uuid.uuid4()),
             lecture_id=lecture.id
         )
 
-
         db.add(new_quiz)
-
         db.commit()
-
         db.refresh(new_quiz)
 
 
 
-        #Saving questions
+        #Save questions
         for item in quiz_data["questions"]:
 
             question = Question(
                 id=str(uuid.uuid4()),
-
                 quiz_id=new_quiz.id,
-
                 question=item["question"],
-
                 options=item["options"],
-
                 answer=item["answer"]
             )
 
-
             db.add(question)
-
-
+        9978421
+        b - 776
+        d - 412
+        b - bdaa - 6
+        eb76d1c82da
 
         db.commit()
 
 
 
     except Exception as e:
+
+        db.rollback()
 
         print(
             "QUIZ ERROR:",
@@ -125,13 +115,9 @@ def create_quiz(
         )
 
 
-
     return {
-
+        "status": "success",
         "quiz_id": new_quiz.id,
-
         "lecture_id": lecture_id,
-
         "questions": quiz_data["questions"]
-
     }
