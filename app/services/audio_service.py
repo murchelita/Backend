@@ -70,3 +70,46 @@ def extract_audio(video_path: str) -> str:
 
 
     return audio_path
+
+def compress_audio(audio_path: str) -> str:
+
+    compressed_path = os.path.splitext(audio_path)[0] + "_compressed.mp3"
+
+
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i",
+        audio_path,
+
+        # mono rather stereo
+        "-ac",
+        "1",
+
+        #
+        "-ar",
+        "16000",
+
+        # smaller scale
+        "-b:a",
+        "64k",
+
+        compressed_path
+    ]
+
+
+    result = subprocess.run(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+
+
+    if result.returncode != 0:
+        raise Exception(
+            result.stderr
+        )
+
+
+    return compressed_path

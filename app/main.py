@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from app.routers import media, users,youtube
+from app.routers import media, users,youtube, test, lectures
+from app.routers import quiz
 
 app = FastAPI()
 
@@ -21,6 +22,12 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(media.router)
 app.include_router(youtube.router)
+app.include_router(test.router)
+
+app.include_router(lectures.router)
+
+app.include_router(quiz.router)
+
 @app.get("/")
 def read_root():
     return {"Status": "working"}

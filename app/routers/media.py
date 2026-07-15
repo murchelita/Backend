@@ -6,18 +6,17 @@ from app.services.audio_service import (
     save_uploaded_file,
     extract_audio
 )
-from app.services.whisper_service import (
+from app.services.groq_service import (
     transcribe_audio
 )
-from app.services.gemini_service import (
+from app.services.llm_service import (
     generate_summary
 )
 from app.database.database import get_db
 from app.database.models import (
     Lecture,
     User,
-    Note,
-    Transcript
+    Note
 )
 
 
@@ -61,6 +60,14 @@ def process_media(
         audio_path = extract_audio(
             file_info["file_path"]
         )
+
+        import os
+
+        print("=" * 50)
+        print("Video:", file_info["file_path"])
+        print("Audio:", audio_path)
+        print("Audio exists:", os.path.exists(audio_path))
+        print("=" * 50)
 
 
     except Exception as e:
@@ -191,7 +198,7 @@ def process_media(
 
 
 
-    # 6. Generate summary (Gemini)
+    # 6. Generate summary (Groq)
 
 
 
@@ -218,7 +225,7 @@ def process_media(
 
             status_code=500,
 
-            detail=f"Gemini failed: {e}"
+            detail=f"LLM generation failed: {e}"
 
         )
 
@@ -239,7 +246,7 @@ def process_media(
 
             transcript=transcript,
 
-            summary="",
+            summary=summary,
 
             key_points=""
 

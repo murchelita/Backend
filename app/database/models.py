@@ -1,24 +1,52 @@
 #Databases tables (SQLAlchemy)
 #import
-from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey, JSON
+
+
+from sqlalchemy import (
+    Column,
+    String,
+    Text,
+    ForeignKey,
+    JSON,
+    DateTime,
+    Integer
+)
+
 from sqlalchemy.sql import func
 from app.database.database import Base
 
+import uuid
 
-#users
+
+
+#USERS
+
+
 class User(Base):
     __tablename__ = "users"
 
     id = Column(String, primary_key=True)
-    email = Column(String, unique=True)
+
+    email = Column(
+        String,
+        unique=True
+    )
+
     full_name = Column(String)
 
 
-#lectures
+
+
+#LECTURES
+
+
 class Lecture(Base):
     __tablename__ = "lectures"
 
-    id = Column(String, primary_key=True)
+    id = Column(
+        String,
+        primary_key=True
+    )
 
     user_id = Column(
         String,
@@ -36,10 +64,12 @@ class Lecture(Base):
 
     transcript = Column(Text)
 
+
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
     )
+
 
     updated_at = Column(
         DateTime(timezone=True),
@@ -47,40 +77,86 @@ class Lecture(Base):
         onupdate=func.now()
     )
 
-# transcripts
+
+
+
+#TRANSCRIPTS
+
+
 class Transcript(Base):
     __tablename__ = "transcripts"
 
-    id = Column(String, primary_key=True)
+
+    id = Column(
+        String,
+        primary_key=True
+    )
+
 
     lecture_id = Column(
         String,
         ForeignKey("lectures.id")
     )
+
 
     text = Column(Text)
 
+
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now()
     )
 
-#notes
+
+
+
+#NOTES
+
+
 class Note(Base):
     __tablename__ = "notes"
 
-    id = Column(String, primary_key=True)
+
+    id = Column(
+        String,
+        primary_key=True
+    )
+
 
     lecture_id = Column(
         String,
         ForeignKey("lectures.id")
     )
 
-    transcript = Column(Text)
 
     summary = Column(Text)
 
+
     key_points = Column(Text)
+
+
+
+
+#QUIZZES
+
+
+class Quiz(Base):
+    __tablename__ = "quizzes"
+
+
+    id = Column(
+        String,
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
+
+
+    lecture_id = Column(
+        String,
+        ForeignKey("lectures.id"),
+        nullable=False
+    )
+
 
     created_at = Column(
         DateTime(timezone=True),
@@ -88,37 +164,72 @@ class Note(Base):
     )
 
 
-#quizzes
-class Quiz(Base):
-    __tablename__ = "quizzes"
-
-    id = Column(String, primary_key=True)
-    lecture_id = Column(String, ForeignKey("lectures.id"))
-
-    title = Column(String)
 
 
-#questions
+#QUESTIONS
+
+
 class Question(Base):
     __tablename__ = "questions"
 
-    id = Column(String, primary_key=True)
-    quiz_id = Column(String, ForeignKey("quizzes.id"))
 
-    question_text = Column(Text)
+    id = Column(
+        String,
+        primary_key=True,
+        default=lambda: str(uuid.uuid4())
+    )
+
+
+    quiz_id = Column(
+        String,
+        ForeignKey("quizzes.id"),
+        nullable=False
+    )
+
+
+    question = Column(Text)
+
+
     options = Column(JSON)
-    correct_answer = Column(String)
 
 
-#quiz attempts
+    answer = Column(Text)
+
+
+
+
+#QUIZ ATTEMPTS
+
+
 class QuizAttempt(Base):
     __tablename__ = "quiz_attempts"
 
-    id = Column(String, primary_key=True)
-    user_id = Column(String, ForeignKey("users.id"))
-    quiz_id = Column(String, ForeignKey("quizzes.id"))
+
+    id = Column(
+        String,
+        primary_key=True
+    )
+
+
+    user_id = Column(
+        String,
+        ForeignKey("users.id")
+    )
+
+
+    quiz_id = Column(
+        String,
+        ForeignKey("quizzes.id")
+    )
+
 
     score = Column(Integer)
+
+
     user_answers = Column(JSON)
 
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
