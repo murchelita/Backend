@@ -116,23 +116,22 @@ class Transcript(Base):
 class Note(Base):
     __tablename__ = "notes"
 
-
     id = Column(
         String,
         primary_key=True
     )
-
 
     lecture_id = Column(
         String,
         ForeignKey("lectures.id")
     )
 
-
     summary = Column(Text)
 
-
     key_points = Column(Text)
+
+
+    transcript = Column(Text, nullable=True)
 
 
 
