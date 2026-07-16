@@ -11,7 +11,8 @@ origins = [
     "https://frontend-note-quiz.vercel.app",
 ]
 
-print("CORS CONFIG:", origins)
+print("CORS LOADED")
+print(origins)
 
 app.add_middleware(
     CORSMiddleware,
