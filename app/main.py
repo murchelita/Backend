@@ -8,7 +8,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "https://frontend-note-quiz.vercel.app",
+    "https://frontend-note-quiz.vercel.app"
 ]
 
 print("CORS LOADED")
