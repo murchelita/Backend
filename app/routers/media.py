@@ -24,7 +24,7 @@ router = APIRouter()
 
 
 
-@router.post("/api/process-media")
+@router.post("/process-media")
 def process_media(
     file: UploadFile = File(...),
     db: Session = Depends(get_db)

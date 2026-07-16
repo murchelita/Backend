@@ -19,12 +19,12 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 
 app.include_router(users.router)
-app.include_router(media.router)
+app.include_router(media.router, prefix="/api")
 app.include_router(youtube.router)
 app.include_router(test.router)
 app.include_router(lectures.router)
