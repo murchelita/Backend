@@ -1,0 +1,3 @@
+0000000000000000000000000000000000000000 6920e72ba81913b50f567875ebc0ad9f2f1b67df 5hk0da <alexandrshkoda200701@gmail.com> 1784161571 +0200	commit (initial): feat: clean start with CORS and no secrets
+6920e72ba81913b50f567875ebc0ad9f2f1b67df 6920e72ba81913b50f567875ebc0ad9f2f1b67df 5hk0da <alexandrshkoda200701@gmail.com> 1784161583 +0200	Branch: renamed refs/heads/temp_branch to refs/heads/main
+6920e72ba81913b50f567875ebc0ad9f2f1b67df c70deba3fb1d69ee3abcbac3cf11a23e4b20bc00 5hk0da <alexandrshkoda200701@gmail.com> 1784161663 +0200	commit: chore: remove secret file and fix ignore

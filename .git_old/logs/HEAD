@@ -1,0 +1,11 @@
+f736a98065615cc9264dfa3035c46505329b2bb8 f085cb018f740d59eed3c56b7a32d1d2400503cc 5hk0da <alexandrshkoda200701@gmail.com> 1784141858 +0200	commit: Add env to gitignore
+f085cb018f740d59eed3c56b7a32d1d2400503cc 321f7668b4977d36484f7b873b35b48acecf44da 5hk0da <alexandrshkoda200701@gmail.com> 1784142293 +0200	commit: adding
+321f7668b4977d36484f7b873b35b48acecf44da bbc55537de4c0f28d9583fd815cbb8fc3c90a612 5hk0da <alexandrshkoda200701@gmail.com> 1784160954 +0200	commit: adding
+bbc55537de4c0f28d9583fd815cbb8fc3c90a612 d59414440f106779634d7d76de4a5b778a6a9346 5hk0da <alexandrshkoda200701@gmail.com> 1784161351 +0200	commit: fix: final cors update for vercel
+d59414440f106779634d7d76de4a5b778a6a9346 37051dc38c15c4c2e22bbbe93cc7df117349fa07 5hk0da <alexandrshkoda200701@gmail.com> 1784161451 +0200	commit: chore: remove .env from git
+37051dc38c15c4c2e22bbbe93cc7df117349fa07 d59414440f106779634d7d76de4a5b778a6a9346 5hk0da <alexandrshkoda200701@gmail.com> 1784161459 +0200	reset: moving to HEAD~1
+d59414440f106779634d7d76de4a5b778a6a9346 1d57b052bed20e274190b7e439181d613b4da411 5hk0da <alexandrshkoda200701@gmail.com> 1784161509 +0200	commit: chore: remove .env and secrets from history
+0000000000000000000000000000000000000000 6920e72ba81913b50f567875ebc0ad9f2f1b67df 5hk0da <alexandrshkoda200701@gmail.com> 1784161571 +0200	commit (initial): feat: clean start with CORS and no secrets
+6920e72ba81913b50f567875ebc0ad9f2f1b67df 0000000000000000000000000000000000000000 5hk0da <alexandrshkoda200701@gmail.com> 1784161583 +0200	Branch: renamed refs/heads/temp_branch to refs/heads/main
+0000000000000000000000000000000000000000 6920e72ba81913b50f567875ebc0ad9f2f1b67df 5hk0da <alexandrshkoda200701@gmail.com> 1784161583 +0200	Branch: renamed refs/heads/temp_branch to refs/heads/main
+6920e72ba81913b50f567875ebc0ad9f2f1b67df c70deba3fb1d69ee3abcbac3cf11a23e4b20bc00 5hk0da <alexandrshkoda200701@gmail.com> 1784161663 +0200	commit: chore: remove secret file and fix ignore
