@@ -11,6 +11,7 @@ origins = [
     "https://frontend-note-quiz.vercel.app",
 ]
 
+print("CORS CONFIG:", origins)
 
 app.add_middleware(
     CORSMiddleware,
