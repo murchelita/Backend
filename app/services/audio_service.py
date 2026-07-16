@@ -3,9 +3,7 @@ import shutil
 import subprocess
 from fastapi import UploadFile
 
-
 UPLOAD_DIR = "uploads"
-
 
 os.makedirs(
     UPLOAD_DIR,
@@ -13,9 +11,9 @@ os.makedirs(
 )
 
 
-def save_uploaded_file(file: UploadFile) -> dict: #Save uploaded video file
+def save_uploaded_file(file: UploadFile) -> dict:
 
-
+    #Save uploaded file.
 
 
     file_path = os.path.join(
@@ -34,12 +32,14 @@ def save_uploaded_file(file: UploadFile) -> dict: #Save uploaded video file
     }
 
 
-
 def extract_audio(video_path: str) -> str:
 
+    filename = os.path.basename(video_path)
 
-    audio_path = os.path.splitext(video_path)[0] + ".mp3"
-
+    audio_path = os.path.join(
+        UPLOAD_DIR,
+        f"processed_{os.path.splitext(filename)[0]}.mp3"
+    )
 
     command = [
         "ffmpeg",
@@ -54,7 +54,6 @@ def extract_audio(video_path: str) -> str:
         audio_path
     ]
 
-
     result = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -62,41 +61,34 @@ def extract_audio(video_path: str) -> str:
         text=True
     )
 
-
     if result.returncode != 0:
-        raise Exception(
-            result.stderr
-        )
-
+        raise Exception(result.stderr)
 
     return audio_path
 
+
 def compress_audio(audio_path: str) -> str:
 
-    compressed_path = os.path.splitext(audio_path)[0] + "_compressed.mp3"
+    filename = os.path.basename(audio_path)
 
+    compressed_path = os.path.join(
+        UPLOAD_DIR,
+        f"compressed_{filename}"
+    )
 
     command = [
         "ffmpeg",
         "-y",
         "-i",
         audio_path,
-
-        # mono rather stereo
         "-ac",
         "1",
-
-        #
         "-ar",
         "16000",
-
-        # smaller scale
         "-b:a",
         "64k",
-
         compressed_path
     ]
-
 
     result = subprocess.run(
         command,
@@ -105,11 +97,7 @@ def compress_audio(audio_path: str) -> str:
         text=True
     )
 
-
     if result.returncode != 0:
-        raise Exception(
-            result.stderr
-        )
-
+        raise Exception(result.stderr)
 
     return compressed_path
